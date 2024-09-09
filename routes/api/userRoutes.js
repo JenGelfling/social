@@ -50,10 +50,17 @@ router.put("/:id", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   try {
-    const user = await User.findByIdAndDelete(req.params.id);
-    if (!user) return res.status(404).json({ message: "User not found" });
+    const user = await User.findById(req.params.id).populate("thoughts");
 
-    await Thought.deleteMany({ _id: { $in: user.thoughts } });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const thoughtIds = user.thoughts.map((thought) => thought._id);
+
+    await Thought.deleteMany({ _id: { $in: thoughtIds } });
+
+    await User.findByIdAndDelete(req.params.id);
 
     res.json({ message: "User and associated thoughts deleted" });
   } catch (err) {
