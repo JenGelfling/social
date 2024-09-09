@@ -1,28 +1,7 @@
 const router = require("express").Router();
-// const {
-//   getUsers,
-//   getSingleUser,
-//   createUser,
-//   deleteUser,
-//   addAssignment,
-//   removeAssignment,
-// } = require('../../controllers/userController');
-
-// // /api/users
-// router.route('/').get(getUsers).post(createUser);
-
-// // /api/users/:userId
-// router.route('/:userId').get(getSingleUser).delete(deleteUser);
-
-// // /api/users/:userId/assignments
-// router.route('/:userId/assignments').post(addAssignment);
-
-// // /api/users/:userId/assignments/:assignmentId
-// router.route('/:userId/assignments/:assignmentId').delete(removeAssignment);
 
 const { User, Thought } = require("../../models");
 
-// GET all users
 router.get("/", async (req, res) => {
   try {
     const users = await User.find().populate("thoughts").populate("friends");
@@ -32,7 +11,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-// GET a single user by its _id and populated thought and friend data
 router.get("/:id", async (req, res) => {
   try {
     const user = await User.findById(req.params.id)
@@ -45,7 +23,6 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// POST a new user
 router.post("/", async (req, res) => {
   try {
     const newUser = await User.create(req.body);
@@ -55,7 +32,6 @@ router.post("/", async (req, res) => {
   }
 });
 
-// PUT to update a user by its _id
 router.put("/:id", async (req, res) => {
   try {
     const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
@@ -72,13 +48,11 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// DELETE to remove user by its _id
 router.delete("/:id", async (req, res) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    // BONUS: Remove associated thoughts
     await Thought.deleteMany({ _id: { $in: user.thoughts } });
 
     res.json({ message: "User and associated thoughts deleted" });
@@ -87,7 +61,6 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-// POST to add a new friend to a user's friend list
 router.post("/:userId/friends/:friendId", async (req, res) => {
   try {
     const user = await User.findById(req.params.userId);
@@ -108,7 +81,6 @@ router.post("/:userId/friends/:friendId", async (req, res) => {
   }
 });
 
-// DELETE to remove a friend from a user's friend list
 router.delete("/:userId/friends/:friendId", async (req, res) => {
   try {
     const user = await User.findById(req.params.userId);
