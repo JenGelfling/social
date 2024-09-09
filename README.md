@@ -5,7 +5,7 @@ also allows one to create and delete friends and reactions.
 
 ## Link to Video Walk Through
 
-[The Social Network API allows relationships between friends, thoughts, and reactions.](https://drive.google.com/)
+[The Social Network API allows relationships between friends, thoughts, and reactions.](https://drive.google.com/file/d/1XIjBXKyf_uxQL1ZDVLASJg6JpgPOcTEO/view?usp=sharing)
 
 ## Link to Github Repo
 
